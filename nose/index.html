@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta para nomi🥺</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffe4e1;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .carta {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #d72638;
+        }
+        p {
+            font-size: 1.2em;
+            line-height: 1.5;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #777;
+        }
+        #contador {
+            font-size: 2em;
+            color: #d72638;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+        #descargar-btn {
+            margin-top: 40px;
+            padding: 10px 20px;
+            background-color: #d72638;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+        #descargar-btn:hover {
+            background-color: #a51c2c;
+        }
+        #descargar-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="carta">
+        <h1>Para mi amor</h1>
+        <p>
+            Querida <strong>nomi🥺</strong>,  
+            Desde el momento en que entraste en mi vida, todo se llenó de luz. Cada día a tu lado es una bendición, y tu sonrisa es la chispa que enciende mi felicidad.  
+            Te amo más de lo que las palabras pueden expresar, y mi mayor deseo es verte siempre feliz. Gracias por ser mi compañera, mi inspiración y mi todo.
+        </p>
+        <footer>
+            Con todo mi amor,  
+            <em>teamo mi reina espere tiii 🥺</em>
+        </footer>
+        <div id="contador">
+            <p>Cuenta regresiva: <span id="timer"></span></p>
+        </div>
+        <!-- Enlace para descargar el PDF -->
+        <a href="carta_para_mi_amor.pdf" download>
+            <button id="descargar-btn" disabled>Descargar PDF</button>
+        </a>
+    </div>
+
+    <script>
+        // Verifica si ya existe un tiempo de inicio guardado en localStorage
+        let storedStartTime = localStorage.getItem("startTime");
+
+        // Si no existe o la cuenta regresiva ya pasó, se reinicia
+        if (!storedStartTime || new Date().getTime() > parseInt(storedStartTime) + 4 * 1000) { // Cambié a 4 segundos
+            storedStartTime = new Date().getTime();
+            localStorage.setItem("startTime", storedStartTime);  // Guardamos el nuevo tiempo de inicio
+        }
+
+        // Establece el tiempo de cuenta regresiva a 4 segundos desde el tiempo guardado
+        let countDownDate = parseInt(storedStartTime) + 3 * 60 * 1000;  // 4 segundos para prueba
+
+        // Función para actualizar la cuenta regresiva
+        function updateCountdown() {
+            let now = new Date().getTime();
+            let distance = countDownDate - now;
+
+            // Calcula el tiempo restante
+            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Muestra el resultado en el elemento con id="timer"
+            document.getElementById("timer").innerHTML = seconds + "s ";
+
+            // Si la cuenta regresiva termina, habilita el botón de descarga
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("timer").innerHTML = "feliz 6 mese me as hecho muy feliz 🥺";
+                document.getElementById("descargar-btn").disabled = false;  // Habilita el botón
+            }
+        }
+
+        // Llama a la función de cuenta regresiva cada segundo
+        let countdownInterval = setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
+
+
