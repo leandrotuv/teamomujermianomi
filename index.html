@@ -88,13 +88,13 @@
         let storedStartTime = localStorage.getItem("startTime");
 
         // Si no existe o la cuenta regresiva ya pasó, se reinicia
-        if (!storedStartTime || new Date().getTime() > parseInt(storedStartTime) + 4 * 1000) { // Cambié a 4 segundos
+        if (!storedStartTime || new Date().getTime() > parseInt(storedStartTime) + 3 * 60 * 1000) { // Cambié a 3 minutos
             storedStartTime = new Date().getTime();
             localStorage.setItem("startTime", storedStartTime);  // Guardamos el nuevo tiempo de inicio
         }
 
-        // Establece el tiempo de cuenta regresiva a 4 segundos desde el tiempo guardado
-        let countDownDate = parseInt(storedStartTime) + 3 * 60 * 1000;  // 4 segundos para prueba
+        // Establece el tiempo de cuenta regresiva a 3 minutos desde el tiempo guardado
+        let countDownDate = parseInt(storedStartTime) + 3 * 60 * 1000;  // 3 minutos para cuenta regresiva
 
         // Función para actualizar la cuenta regresiva
         function updateCountdown() {
@@ -102,15 +102,16 @@
             let distance = countDownDate - now;
 
             // Calcula el tiempo restante
+            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
             // Muestra el resultado en el elemento con id="timer"
-            document.getElementById("timer").innerHTML = seconds + "s ";
+            document.getElementById("timer").innerHTML = minutes + "m " + seconds + "s ";
 
             // Si la cuenta regresiva termina, habilita el botón de descarga
             if (distance < 0) {
                 clearInterval(countdownInterval);
-                document.getElementById("timer").innerHTML = "feliz 6 mese me as hecho muy feliz 🥺";
+                document.getElementById("timer").innerHTML = "¡Tiempo terminado! Ahora puedes descargar el PDF";
                 document.getElementById("descargar-btn").disabled = false;  // Habilita el botón
             }
         }
@@ -120,5 +121,4 @@
     </script>
 </body>
 </html>
-
 
