@@ -86,38 +86,50 @@
     <script>
         // Verifica si ya existe un tiempo de inicio guardado en localStorage
         let storedStartTime = localStorage.getItem("startTime");
+        let downloaded = localStorage.getItem("downloaded");
 
-        // Si no existe o la cuenta regresiva ya pasó, se reinicia
-        if (!storedStartTime || new Date().getTime() > parseInt(storedStartTime) + 3 * 60 * 1000) { // Cambié a 3 minutos
-            storedStartTime = new Date().getTime();
-            localStorage.setItem("startTime", storedStartTime);  // Guardamos el nuevo tiempo de inicio
-        }
-
-        // Establece el tiempo de cuenta regresiva a 3 minutos desde el tiempo guardado
-        let countDownDate = parseInt(storedStartTime) + 3 * 60 * 1000;  // 3 minutos para cuenta regresiva
-
-        // Función para actualizar la cuenta regresiva
-        function updateCountdown() {
-            let now = new Date().getTime();
-            let distance = countDownDate - now;
-
-            // Calcula el tiempo restante
-            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            // Muestra el resultado en el elemento con id="timer"
-            document.getElementById("timer").innerHTML = minutes + "m " + seconds + "s ";
-
-            // Si la cuenta regresiva termina, habilita el botón de descarga
-            if (distance < 0) {
-                clearInterval(countdownInterval);
-                document.getElementById("timer").innerHTML = "¡Tiempo terminado! Ahora puedes descargar el PDF";
-                document.getElementById("descargar-btn").disabled = false;  // Habilita el botón
+        // Si el archivo ya fue descargado, no reiniciar la cuenta regresiva y habilitar el botón
+        if (downloaded === "true") {
+            document.getElementById("descargar-btn").disabled = false;
+            document.getElementById("contador").innerHTML = "¡Ya puedes descargar el PDF!";
+        } else {
+            // Si no existe o la cuenta regresiva ya pasó, se reinicia
+            if (!storedStartTime || new Date().getTime() > parseInt(storedStartTime) + 3 * 60 * 1000) { // Cambié a 3 minutos
+                storedStartTime = new Date().getTime();
+                localStorage.setItem("startTime", storedStartTime);  // Guardamos el nuevo tiempo de inicio
             }
+
+            // Establece el tiempo de cuenta regresiva a 3 minutos desde el tiempo guardado
+            let countDownDate = parseInt(storedStartTime) + 3 * 60 * 1000;  // 3 minutos para cuenta regresiva
+
+            // Función para actualizar la cuenta regresiva
+            function updateCountdown() {
+                let now = new Date().getTime();
+                let distance = countDownDate - now;
+
+                // Calcula el tiempo restante
+                let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Muestra el resultado en el elemento con id="timer"
+                document.getElementById("timer").innerHTML = minutes + "m " + seconds + "s ";
+
+                // Si la cuenta regresiva termina, habilita el botón de descarga
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById("timer").innerHTML = "¡Tiempo terminado! Ahora puedes descargar el PDF";
+                    document.getElementById("descargar-btn").disabled = false;  // Habilita el botón
+                }
+            }
+
+            // Llama a la función de cuenta regresiva cada segundo
+            let countdownInterval = setInterval(updateCountdown, 1000);
         }
 
-        // Llama a la función de cuenta regresiva cada segundo
-        let countdownInterval = setInterval(updateCountdown, 1000);
+        // Al hacer clic en el botón de descarga, guardar el estado de que el PDF ya fue descargado
+        document.getElementById("descargar-btn").addEventListener("click", function () {
+            localStorage.setItem("downloaded", "true");
+        });
     </script>
 </body>
 </html>
